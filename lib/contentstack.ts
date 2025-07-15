@@ -1,14 +1,14 @@
 import * as contentstack from 'contentstack';
 
 const Stack = contentstack.Stack({
-  api_key: process.env.CONTENTSTACK_API_KEY!,
-  delivery_token: process.env.CONTENTSTACK_DELIVERY_TOKEN!,
-  environment: process.env.CONTENTSTACK_ENVIRONMENT!,
+  api_key: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY!,
+  delivery_token: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN!,
+  environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT!,
 });
 console.log("ENV CHECK:", {
-  api_key: process.env.CONTENTSTACK_API_KEY,
-  token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
-  env: process.env.CONTENTSTACK_ENVIRONMENT,
+  api_key: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY,
+  token: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN,
+  env: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT,
 });
 
 export default Stack;

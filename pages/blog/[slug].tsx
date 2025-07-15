@@ -1,5 +1,5 @@
 // pages/blog/[slug].tsx
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticProps } from 'next';
 import Stack from '../../lib/contentstack';
 
 type BlogPost = {
@@ -8,19 +8,20 @@ type BlogPost = {
   slug: string;
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const Query = Stack.ContentType('blog_post').Query().toJSON();
-  const [entries] = await Query.find();
+export async function getStaticPaths() {
+  const entries = await Stack.ContentType('blog_post').Query().toJSON().find();
 
-  const paths = entries.map((entry: BlogPost) => ({
-    params: { slug: entry.slug },
+  console.log('Build-time blog post slugs:', entries[0].map(e => e.slug));
+
+  const paths = entries[0].map((entry: BlogPost) => ({
+    params: { slug: entry.slug.replace(/^\//, '') }, // strip leading slash if any
   }));
 
   return {
     paths,
-    fallback: false, // or 'blocking' if you want on-demand builds
+    fallback: false,
   };
-};
+}
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;

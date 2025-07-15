@@ -5,10 +5,5 @@ const Stack = contentstack.Stack({
   delivery_token: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN!,
   environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT!,
 });
-console.log("ENV CHECK:", {
-  api_key: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY,
-  token: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN,
-  env: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT,
-});
 
 export default Stack;

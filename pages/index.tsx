@@ -7,7 +7,7 @@ export default function Home() {
       <h1>🌯 Space Burrito Chronicles</h1>
 
       <p>
-        Welcome to the galaxy’s most trusted source for space-faring snacks,
+        Welcome to the galaxys most trusted source for space-faring snacks,
         cosmic conspiracy theories, and extraterrestrial etiquette tips.
       </p>
 
@@ -20,7 +20,7 @@ export default function Home() {
 
       <footer style={{ marginTop: '2rem', fontStyle: 'italic' }}>
         🚀 This site is built with Next.js, powered by Contentstack, and
-        deployed with AWS Amplify. Who said launch testing can't be delicious?
+        deployed with AWS Amplify. Who said launch testing cant be delicious?
       </footer>
     </main>
   );

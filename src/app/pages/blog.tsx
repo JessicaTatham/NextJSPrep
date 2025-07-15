@@ -1,5 +1,11 @@
 import Stack from '../lib/contentstack';
 
+type BlogPost = {
+  uid: string;
+  title: string;
+  body: string;
+};
+
 export async function getStaticProps() {
   const Query = Stack.ContentType('blog_post').Query().toJSON();
 
@@ -13,11 +19,11 @@ export async function getStaticProps() {
   };
 }
 
-export default function Blog({ posts }: any) {
+export default function Blog({ posts }: { posts: BlogPost[] }) {
   return (
     <div>
       <h1>Blog</h1>
-      {posts.map((post: any) => (
+      {posts.map((post: BlogPost) => (
         <div key={post.uid}>
           <h2>{post.title}</h2>
           <p>{post.body}</p>

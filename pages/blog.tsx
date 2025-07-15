@@ -9,6 +9,12 @@ type BlogPost = {
 };
 
 export async function getStaticProps() {
+  console.log("ENV CHECK:", {
+    api_key: process.env.CONTENTSTACK_API_KEY,
+    token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
+    env: process.env.CONTENTSTACK_ENVIRONMENT,
+  });
+
   const Query = Stack.ContentType('blog_post').Query().toJSON();
   const [entries] = await Query.find();
 

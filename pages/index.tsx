@@ -2,6 +2,11 @@
 import Link from 'next/link';
 
 export default function Home() {
+  console.log("ENV CHECK:", {
+    api_key: process.env.CONTENTSTACK_API_KEY,
+    token: process.env.CONTENTSTACK_DELIVERY_TOKEN,
+    env: process.env.CONTENTSTACK_ENVIRONMENT,
+  });
   return (
     <main style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <h1>🌯 Space Burrito Chronicles</h1>

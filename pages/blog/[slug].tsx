@@ -1,6 +1,7 @@
 // pages/blog/[slug].tsx
-import { GetStaticProps } from 'next';
-import Stack from '../../lib/contentstack';
+
+import { GetStaticPaths, GetStaticProps } from 'next';
+import Stack from '../../lib/contentstack'; // your configured Contentstack SDK
 
 type BlogPost = {
   title: string;
@@ -8,54 +9,62 @@ type BlogPost = {
   slug: string;
 };
 
-export async function getStaticPaths() {
-  const entries = await Stack.ContentType('blog_post').Query().toJSON().find();
+type Props = {
+  post: BlogPost;
+};
 
-  console.log('Build-time blog post slugs:', entries[0].map(e => e.slug));
+export const getStaticPaths: GetStaticPaths = async () => {
+  const [entries] = await Stack.ContentType('blog_post')
+    .Query()
+    .only(['slug']) // ← Use your actual field name here
+    .toJSON()
+    .find();
 
-  const paths = entries[0].map((entry: BlogPost) => ({
-    params: { slug: entry.slug.replace(/^\//, '') }, // strip leading slash if any
+  const paths = entries.map((entry: BlogPost) => ({
+    params: { slug: entry.slug },
   }));
+
+  console.log('🛠️ Static Paths Generated:', paths);
 
   return {
     paths,
-    fallback: false,
-  };
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const slug = params?.slug as string;
-
-  const Query = Stack.ContentType('blog_post')
-    .Query()
-    .where('slug', slug)
-    .toJSON();
-
-  const [entries] = await Query.find();
-
-  if (!entries || entries.length === 0) {
-    return { notFound: true };
-  }
-
-  const post = entries[0];
-
-  return {
-    props: {
-      post: {
-        title: post.title,
-        body: post.body,
-        slug: post.slug,
-      },
-    },
-    revalidate: 60,
+    fallback: false, // or 'blocking' if using ISR
   };
 };
 
-export default function BlogPost({ post }: { post: BlogPost }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const slugParam = params?.slug;
+
+  const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
+
+  if (!slug) {
+    return { notFound: true };
+  }
+
+  const [entries] = await Stack.ContentType('blog_post')
+    .Query()
+    .where('slug', slug)
+    .toJSON()
+    .find();
+
+  if (!entries.length) {
+    return { notFound: true };
+  }
+
+  return {
+    props: {
+      post: entries[0],
+    },
+  };
+};
+
+const BlogPostPage = ({ post }: Props) => {
   return (
     <article>
       <h1>{post.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: post.body }} />
     </article>
   );
-}
+};
+
+export default BlogPostPage;
